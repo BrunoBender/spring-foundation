@@ -13,3 +13,7 @@ spring:
       #hibernate:
         #dialect: org.hibernate.dialect.MySQLDialect
     show-sql: false
+springdoc:
+  pathsToMarch: /api/**
+  swagger-ui:
+    use-root-path: true
