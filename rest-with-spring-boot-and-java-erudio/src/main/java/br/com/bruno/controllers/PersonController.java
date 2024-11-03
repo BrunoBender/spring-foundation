@@ -4,9 +4,9 @@ import br.com.bruno.data.dto.v1.PersonDto;
 import br.com.bruno.data.dto.v2.PersonDtoV2;
 import br.com.bruno.exceptions.ResourceNotFoundException;
 import br.com.bruno.services.PersonService;
+import br.com.bruno.util.MediaType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,7 +19,7 @@ public class PersonController {
     private PersonService service;
 
     @GetMapping(
-            produces = MediaType.APPLICATION_JSON_VALUE
+            produces = { MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML }
     )
     public List<PersonDto> findAll() {
         return service.findAll();
@@ -27,15 +27,15 @@ public class PersonController {
 
     @GetMapping(
             value = "{id}",
-            produces = MediaType.APPLICATION_JSON_VALUE
+            produces = { MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML }
     )
     public PersonDto findById(@PathVariable(value = "id") Long id) throws ResourceNotFoundException {
         return service.findById(id);
     }
 
     @PostMapping(
-            consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE
+            consumes = { MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML },
+            produces = { MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML }
     )
     @ResponseStatus(HttpStatus.CREATED)
     public PersonDto create(@RequestBody PersonDto person) {
@@ -43,8 +43,8 @@ public class PersonController {
     }
 
     @PutMapping(
-            consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE
+            consumes = { MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML },
+            produces = { MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML }
     )
     public PersonDto update(@RequestBody PersonDto person) {
         return service.update(person);
@@ -62,8 +62,8 @@ public class PersonController {
 
     @PostMapping(
             value = "v2",
-            consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE
+            consumes = { MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML },
+            produces = { MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML }
     )
     @ResponseStatus( HttpStatus.CREATED)
     public PersonDtoV2 create(@RequestBody PersonDtoV2 person) {
