@@ -1,5 +1,9 @@
+server:
+  port: 8080
+cors:
+  originPatterns: http://localhost:3000,http://localhost:8080,https://erudio.com.br
 spring:
-  application.name: 'rest-with-spring-boot-and-java-erudio'
+  application.name: rest-with-spring-boot-and-java-erudio
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/rest_with_spring_boot_erudio?useTimezone=true&serverTimezone=UTC
