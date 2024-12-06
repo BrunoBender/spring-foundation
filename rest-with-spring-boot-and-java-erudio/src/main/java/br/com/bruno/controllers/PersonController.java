@@ -1,5 +1,6 @@
 package br.com.bruno.controllers;
 
+import br.com.bruno.commom.SecurityUtils;
 import br.com.bruno.data.dto.v1.PersonDto;
 import br.com.bruno.data.dto.v2.PersonDtoV2;
 import br.com.bruno.exceptions.ResourceNotFoundException;
@@ -13,9 +14,12 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 //@CrossOrigin(value = "http://localhost:8080")
 @RestController
@@ -26,9 +30,15 @@ public class PersonController {
     @Autowired
     private PersonService service;
 
+    @Autowired
+    private SecurityUtils securityUtils;
+
+    private final Logger logger = Logger.getLogger(PersonService.class.getName());
+
     @GetMapping(
             produces = { MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML }
     )
+    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
     @Operation(
             summary = "Finds all people",
             description = "Finds all people",
@@ -46,7 +56,12 @@ public class PersonController {
                     @ApiResponse(description = "Internal Error", responseCode = "500", content = @Content)
             }
     )
-    public List<PersonDto> findAll() {
+    public List<PersonDto> findAll(JwtAuthenticationToken token) {
+
+        var user = securityUtils.currentUser(token);
+
+        logger.info("Usuário atual: " + user.getUsername());
+
         return service.findAll();
     }
 

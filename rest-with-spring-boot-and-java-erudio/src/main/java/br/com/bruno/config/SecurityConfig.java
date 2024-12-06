@@ -5,9 +5,12 @@ import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
@@ -23,6 +26,7 @@ import java.security.interfaces.RSAPublicKey;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity // Habilita proteção de endpoints por abrangência
 public class SecurityConfig {
 
     @Value("${jwt.public.key}")
@@ -34,8 +38,12 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
-                .authorizeHttpRequests(authorize -> authorize.anyRequest().authenticated())
-//                .csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests(authorize ->
+                        authorize
+                                .requestMatchers(HttpMethod.POST, "/login").permitAll() // Remove a necessidade de autenticação
+                                .anyRequest().authenticated()
+                )
+                .csrf(AbstractHttpConfigurer::disable) // Usar apenas em ambiente de desenvolvimento
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
@@ -54,6 +62,7 @@ public class SecurityConfig {
         return NimbusJwtDecoder.withPublicKey(this.publicKey).build();
     }
 
+    //Realiza a criptografia das senhas salvas em base de dados
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
