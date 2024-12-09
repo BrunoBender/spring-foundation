@@ -1,7 +1,7 @@
 package br.com.bruno.commom;
 
-import br.com.bruno.entities.User;
-import br.com.bruno.repositories.UserRepository;
+import br.com.bruno.entities.security.User;
+import br.com.bruno.repositories.security.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;

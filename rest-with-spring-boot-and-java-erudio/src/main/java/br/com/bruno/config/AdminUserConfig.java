@@ -1,22 +1,21 @@
 package br.com.bruno.config;
 
-import br.com.bruno.entities.Permission;
-import br.com.bruno.entities.User;
+import br.com.bruno.entities.security.User;
 import br.com.bruno.repositories.PermissionRepository;
-import br.com.bruno.repositories.UserRepository;
+import br.com.bruno.repositories.security.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import java.util.Set;
+import java.util.List;
 
 @Configuration
 public class AdminUserConfig implements CommandLineRunner {
 
-    private PermissionRepository permissionRepository;
-    private UserRepository userRepository;
-    private BCryptPasswordEncoder passwordEncoder;
+    private final PermissionRepository permissionRepository;
+    private final UserRepository userRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     public AdminUserConfig(
         PermissionRepository permissionRepository,
@@ -30,10 +29,10 @@ public class AdminUserConfig implements CommandLineRunner {
 
     @Override
     @Transactional
-    public void run(String... args) throws Exception {
-        var permissionAdmin = permissionRepository.findByDescription(Permission.Values.ADMIN.name());
+    public void run(String... args) {
+        var permissionAdmin = permissionRepository.findByDescription("ADMIN");
 
-        var userAdmin = userRepository.findByUsername("admin");
+        var userAdmin = userRepository.findByUserName("admin");
 
         userAdmin.ifPresentOrElse(
                 user -> {
@@ -41,9 +40,9 @@ public class AdminUserConfig implements CommandLineRunner {
                 },
                 () -> {
                     var user = new User();
-                    user.setUsername("admin");
+                    user.setUserName("admin");
                     user.setPassword(passwordEncoder.encode("admin"));
-                    user.setPermissions(Set.of(permissionAdmin));
+                    user.setPermitions(List.of(permissionAdmin));
                     userRepository.save(user);
                 }
         );
