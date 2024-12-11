@@ -63,7 +63,7 @@ public class JwtTokenProvider {
                 .claim("roles", roles)
                 .build();
 
-        //Realiza o enconde o token com base na configuração definida no SecurityConfig,
+        //Realiza o enconde do token com base na configuração definida no SecurityConfig,
         // com o uso das chaves privadas e públicas
         return jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
     }

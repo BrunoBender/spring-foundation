@@ -16,7 +16,7 @@ public class SecurityUtils {
 
     public User currentUser(JwtAuthenticationToken token) {
         return userRepository
-                .findById(Long.valueOf(token.getName()))
+                .findByUserName(token.getName())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 }

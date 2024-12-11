@@ -23,7 +23,7 @@ import java.util.logging.Logger;
 
 //@CrossOrigin(value = "http://localhost:8080")
 @RestController
-@RequestMapping("person")
+@RequestMapping("api/person")
 @Tag(name = "People", description = "Endpoints for managing people")
 public class PersonController {
 
@@ -38,7 +38,8 @@ public class PersonController {
     @GetMapping(
             produces = { MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML }
     )
-    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
+    //TODO:Rever método de abrangência posteriormente
+//    @PreAuthorize("hasAuthority('ROLES_ADMIN')")
     @Operation(
             summary = "Finds all people",
             description = "Finds all people",
