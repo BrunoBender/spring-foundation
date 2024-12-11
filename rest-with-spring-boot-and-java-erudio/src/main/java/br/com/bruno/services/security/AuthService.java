@@ -1,6 +1,8 @@
 package br.com.bruno.services.security;
 
 import br.com.bruno.data.dto.v1.security.AccountCredentialsDto;
+import br.com.bruno.data.dto.v1.security.TokenDto;
+import br.com.bruno.entities.security.User;
 import br.com.bruno.repositories.security.UserRepository;
 import br.com.bruno.security.jwt.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,17 +31,27 @@ public class AuthService {
             var username = data.getUsername();
             var password = data.getPassword();
 
+            var user = findUserByUsername(username);
+
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(username, password)
             );
 
-            var user = userRepository.findByUserName(username)
-                    .orElseThrow(() -> new UsernameNotFoundException("Username " + username + " not found!"));
 
             var tokenResponse = tokenProvider.createAccessToken(username, user.getRoles());
             return ResponseEntity.ok(tokenResponse);
         } catch (Exception e) {
             throw new BadCredentialsException("Invalid username/password supplied!");
         }
+    }
+
+    public TokenDto refreshToken(String username, String refreshToken) {
+        findUserByUsername(username);
+        return tokenProvider.refreshToken(refreshToken);
+    }
+
+    private User findUserByUsername(String username) {
+        return userRepository.findByUserName(username)
+                .orElseThrow(() -> new UsernameNotFoundException("Username " + username + " not found!"));
     }
 }
