@@ -12,7 +12,6 @@ import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -37,7 +36,6 @@ class PersonServiceTest {
     @BeforeEach
     void setUp() {
         input = new MockPerson();
-        MockitoAnnotations.openMocks(this);
     }
 
     @Test
@@ -128,7 +126,7 @@ class PersonServiceTest {
         assertNotNull(personDto);
         assertNotNull(personDto.getKey());
         assertNotNull(personDto.getLinks());
-        assertTrue(personDto.getLinks().toString().contains("</person/" + personDto.getKey() + ">;rel=\"self\""));
+        assertTrue(personDto.getLinks().toString().contains("</api/person/" + personDto.getKey() + ">;rel=\"self\""));
     }
 
 }

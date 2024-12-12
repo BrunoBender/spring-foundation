@@ -4,10 +4,7 @@ import br.com.bruno.data.dto.v1.BookDto;
 import br.com.bruno.entities.Book;
 import br.com.bruno.exceptions.RequiredObjectISNullException;
 import br.com.bruno.repositories.BookRepository;
-import br.com.bruno.repositories.BookRepository;
 import br.com.bruno.services.BookService;
-import br.com.bruno.services.BookService;
-import br.com.bruno.unittests.mapper.mocks.MockBook;
 import br.com.bruno.unittests.mapper.mocks.MockBook;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,7 +12,6 @@ import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
@@ -40,7 +36,6 @@ class BookServiceTest {
     @BeforeEach
     void setUp() {
         input = new MockBook();
-        MockitoAnnotations.openMocks(this);
     }
 
     @Test
@@ -131,7 +126,7 @@ class BookServiceTest {
         assertNotNull(bookDto);
         assertNotNull(bookDto.getKey());
         assertNotNull(bookDto.getLinks());
-        assertTrue(bookDto.getLinks().toString().contains("</book/" + bookDto.getKey() + ">;rel=\"self\""));
+        assertTrue(bookDto.getLinks().toString().contains("</api/book/" + bookDto.getKey() + ">;rel=\"self\""));
     }
 
 }
