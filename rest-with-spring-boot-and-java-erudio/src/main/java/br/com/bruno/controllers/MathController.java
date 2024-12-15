@@ -6,12 +6,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.concurrent.atomic.AtomicLong;
-
 @RestController
 public class MathController {
-
-    private AtomicLong counter = new AtomicLong();
 
     @RequestMapping(value = "/exception-test/{numberOne}", method = RequestMethod.GET)
     public Double exceptionTest(@PathVariable(value = "numberOne") Integer numberOne) throws Exception {
