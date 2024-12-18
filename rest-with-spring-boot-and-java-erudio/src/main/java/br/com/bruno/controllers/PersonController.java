@@ -176,4 +176,17 @@ public class PersonController {
     public PersonDtoV2 create(@RequestBody PersonDtoV2 person) {
         return service.createV2(person);
     }
+
+    @CrossOrigin(origins = {"http://localhost:8080", "https://erudio.com.br"})
+    @PostMapping(
+            value = "test",
+            consumes = { MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML },
+            produces = { MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML }
+    )
+    @ResponseStatus(HttpStatus.CREATED)
+    public PersonDto testCreate(@RequestBody PersonDto person) {
+
+        person.setKey(1L);
+        return person;
+    }
 }

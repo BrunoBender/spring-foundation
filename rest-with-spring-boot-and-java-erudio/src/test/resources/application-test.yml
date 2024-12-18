@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8889
 cors:
   originPatterns: http://localhost:3000,http://localhost:8080,https://erudio.com.br
 springdoc:
@@ -25,31 +25,12 @@ spring:
     open-in-view: false
     hibernate:
       ddl-auto: none
-        #properties:
+      #properties:
       #hibernate:
       #dialect: org.hibernate.dialect.MySQLDialect
     show-sql: false
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-
----
-
-spring:
-  config:
-    activate:
-      on-profile: dev
-  datasource:
     url: jdbc:mysql://localhost:3306/rest_with_spring_boot_erudio?useTimezone=true&serverTimezone=UTC
     username: root
     password: admin
-
----
-
-spring:
-  config:
-    activate:
-      on-profile: dev-senior
-  datasource:
-    url: jdbc:mysql://localhost:3306/rest_with_spring_boot_erudio?useTimezone=true&serverTimezone=UTC
-    username: root
-    password: root
