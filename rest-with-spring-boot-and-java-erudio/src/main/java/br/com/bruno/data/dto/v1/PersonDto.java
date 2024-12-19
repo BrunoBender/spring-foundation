@@ -4,8 +4,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.github.dozermapper.core.Mapping;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.springframework.hateoas.RepresentationModel;
 
+@EqualsAndHashCode(callSuper = true)
 @JsonPropertyOrder({"id", "firstName", "lastName", "address", "gender"})
 @Data
 public class PersonDto extends RepresentationModel<PersonDto> {
@@ -21,4 +23,6 @@ public class PersonDto extends RepresentationModel<PersonDto> {
     private String address;
 
     private String gender;
+
+    private Boolean enabled;
 }

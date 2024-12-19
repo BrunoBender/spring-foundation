@@ -141,6 +141,31 @@ public class PersonController {
         return service.update(person);
     }
 
+    @PatchMapping(
+            value = "{id}",
+            produces = { MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML }
+    )
+    @Operation(
+            summary = "Disable a Person",
+            description = "Disable a specific Person by your ID",
+            tags = {"People"},
+            responses = {
+                    @ApiResponse(
+                            description = "Success",
+                            responseCode = "200",
+                            content = @Content(schema = @Schema(implementation = PersonDto.class))
+                    ),
+                    @ApiResponse(description = "No Content", responseCode = "204", content = @Content),
+                    @ApiResponse(description = "Bad Request", responseCode = "400", content = @Content),
+                    @ApiResponse(description = "Unauthorized", responseCode = "401", content = @Content),
+                    @ApiResponse(description = "Not fount", responseCode = "404", content = @Content),
+                    @ApiResponse(description = "Internal Error", responseCode = "500", content = @Content)
+            }
+    )
+    public PersonDto disablePerson(@PathVariable(value = "id") Long id) throws ResourceNotFoundException {
+        return service.disablePerson(id);
+    }
+
     @DeleteMapping(
             value = "{id}"
     )
@@ -172,6 +197,21 @@ public class PersonController {
             consumes = { MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML },
             produces = { MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML }
     )
+    @Operation(
+            summary = "Add a new Person V2",
+            description = "Add a new Person V2",
+            tags = {"People"},
+            responses = {
+                    @ApiResponse(
+                            description = "Success",
+                            responseCode = "200",
+                            content = @Content(schema = @Schema(implementation = PersonDtoV2.class))
+                    ),
+                    @ApiResponse(description = "Bad Request", responseCode = "400", content = @Content),
+                    @ApiResponse(description = "Unauthorized", responseCode = "401", content = @Content),
+                    @ApiResponse(description = "Internal Error", responseCode = "500", content = @Content)
+            }
+    )
     @ResponseStatus( HttpStatus.CREATED)
     public PersonDtoV2 create(@RequestBody PersonDtoV2 person) {
         return service.createV2(person);
@@ -182,6 +222,21 @@ public class PersonController {
             value = "test",
             consumes = { MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML },
             produces = { MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML }
+    )
+    @Operation(
+            summary = "Add a new Person (simulation)",
+            description = "This endpoint simulates the creation of a person for testing purposes",
+            tags = {"People"},
+            responses = {
+                    @ApiResponse(
+                            description = "Success",
+                            responseCode = "200",
+                            content = @Content(schema = @Schema(implementation = PersonDtoV2.class))
+                    ),
+                    @ApiResponse(description = "Bad Request", responseCode = "400", content = @Content),
+                    @ApiResponse(description = "Unauthorized", responseCode = "401", content = @Content),
+                    @ApiResponse(description = "Internal Error", responseCode = "500", content = @Content)
+            }
     )
     @ResponseStatus(HttpStatus.CREATED)
     public PersonDto testCreate(@RequestBody PersonDto person) {

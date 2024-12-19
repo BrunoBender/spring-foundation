@@ -9,6 +9,7 @@ import br.com.bruno.exceptions.ResourceNotFoundException;
 import br.com.bruno.mapper.DozerMapper;
 import br.com.bruno.mapper.custom.PersonMapper;
 import br.com.bruno.repositories.PersonRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -72,6 +73,7 @@ public class PersonService {
         entity.setLastName(person.getLastName());
         entity.setAddress(person.getAddress());
         entity.setGender(person.getGender());
+        entity.setEnabled(person.getEnabled());
 
         return addHateoasToFindById(DozerMapper.parseObject(repository.save(entity), PersonDto.class));
     }
@@ -83,6 +85,18 @@ public class PersonService {
                 .orElseThrow(() -> new ResourceNotFoundException("Person not found for ID " + id));
 
         repository.delete(entity);
+    }
+
+    @Transactional
+    public PersonDto disablePerson(Long id) throws ResourceNotFoundException {
+        logger.info("Disabling one person!");
+
+        repository.disablePerson(id);
+
+        var entity = repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Person not found for ID " + id));
+
+        return addHateoasToFindById(DozerMapper.parseObject(entity, PersonDto.class));
     }
 
     // Version 2

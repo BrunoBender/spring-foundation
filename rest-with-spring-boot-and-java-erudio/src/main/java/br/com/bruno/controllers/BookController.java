@@ -80,7 +80,7 @@ public class BookController {
     @Operation(
             summary = "Add a new Book",
             description = "Adds a new Book by passing in a JSON, XML or YML representation of the Book",
-            tags = {"People"},
+            tags = {"Books"},
             responses = {
                     @ApiResponse(
                             description = "Success",

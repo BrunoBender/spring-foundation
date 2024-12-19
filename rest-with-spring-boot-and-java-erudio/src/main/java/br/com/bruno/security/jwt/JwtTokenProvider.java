@@ -100,7 +100,7 @@ public class JwtTokenProvider {
         return createAccessToken(authentication.getName(), authentication.getAuthorities());
     }
 
-    public Authentication getAuthentication(String token) throws InvalidJwtAuthenticationException {
+    public Authentication getAuthentication(String token) throws InvalidJwtAuthenticationException, JwtValidationException {
 
         Jwt decodedJWT = decodedToken(token);
         validateToken(decodedJWT);
@@ -110,7 +110,7 @@ public class JwtTokenProvider {
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
-    private Jwt decodedToken(String token) {
+    private Jwt decodedToken(String token) throws JwtValidationException {
         return jwtDecoder.decode(token);
     }
 

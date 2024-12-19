@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>br.com.bruno</groupId>
-	<artifactId>rest-with-spring-boot-and-java-erudio</artifactId>
+	<artifactId>spring-foundation</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>rest-with-spring-boot-and-java-erudio</name>
 	<description>Primeiro projeto curso Rest com Devops</description>
