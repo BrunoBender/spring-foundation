@@ -8,9 +8,13 @@ import br.com.bruno.exceptions.ResourceNotFoundException;
 import br.com.bruno.mapper.DozerMapper;
 import br.com.bruno.repositories.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.logging.Logger;
 
@@ -25,13 +29,34 @@ public class BookService {
     @Autowired
     private BookRepository repository;
 
-    public List<BookDto> findAll() {
+    @Autowired
+    private PagedResourcesAssembler<BookDto> assembler;
+
+    public PagedModel<EntityModel<BookDto>> findAll(Pageable pageable) {
         logger.info("Finding all books!");
-        var dtoList = DozerMapper.parseListObjects(repository.findAll(), BookDto.class);
 
-        dtoList.forEach(this::addHateoasToFindById);
+        var bookPage = repository.findAll(pageable);
+        var bookDtoPage = bookPage
+                .map(this::toBookDto)
+                .map(this::addHateoasToFindById);
 
-        return dtoList;
+        Link link = getLinkHatoasToFindAll(pageable);
+
+        return assembler.toModel(bookDtoPage, link);
+    }
+
+    private BookDto toBookDto(Book entity) {
+        return DozerMapper.parseObject(entity, BookDto.class);
+    }
+
+    private Link getLinkHatoasToFindAll(
+            Pageable pageable
+    ) {
+        return linkTo(methodOn(BookController.class).findAll(
+                pageable.getPageNumber(),
+                pageable.getPageSize(),
+                "asc"
+        )).withSelfRel();
     }
 
     public BookDto findById(Long id) throws ResourceNotFoundException {

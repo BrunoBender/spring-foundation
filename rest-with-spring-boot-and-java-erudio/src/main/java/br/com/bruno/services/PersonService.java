@@ -1,5 +1,6 @@
 package br.com.bruno.services;
 
+import br.com.bruno.commom.SecurityUtils;
 import br.com.bruno.controllers.PersonController;
 import br.com.bruno.data.dto.v1.PersonDto;
 import br.com.bruno.data.dto.v2.PersonDtoV2;
@@ -11,11 +12,16 @@ import br.com.bruno.mapper.custom.PersonMapper;
 import br.com.bruno.repositories.PersonRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.PagedModel;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Service;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.logging.Logger;
 
@@ -30,13 +36,46 @@ public class PersonService {
     @Autowired
     private PersonMapper personMapper;
 
-    public List<PersonDto> findAll() {
+    @Autowired
+    private SecurityUtils securityUtils;
+
+    @Autowired
+    private PagedResourcesAssembler<PersonDto> assembler;
+
+    public PagedModel<EntityModel<PersonDto>> findAll(Pageable pageable, JwtAuthenticationToken token) {
+
+        if(Objects.nonNull(token)) {
+            var user = securityUtils.currentUser(token);
+
+            logger.info("Usuário atual: " + user.getUsername());
+        }
+
         logger.info("Finding all people!");
-        var dtoList = DozerMapper.parseListObjects(repository.findAll(), PersonDto.class);
 
-        dtoList.forEach(this::addHateoasToFindById);
+        var personPage = repository.findAll(pageable);
+        var personDtoPage = personPage
+                .map(this::toPersonDto)
+                .map(this::addHateoasToFindById);
 
-        return dtoList;
+        Link link = getLinkHatoasToFindAll(token, pageable);
+
+        return assembler.toModel(personDtoPage, link);
+    }
+
+    private Link getLinkHatoasToFindAll(
+            JwtAuthenticationToken token,
+            Pageable pageable
+    ) {
+        return linkTo(methodOn(PersonController.class).findAll(
+                token,
+                pageable.getPageNumber(),
+                pageable.getPageSize(),
+                "asc"
+        )).withSelfRel();
+    }
+
+    private PersonDto toPersonDto(Person entity) {
+        return DozerMapper.parseObject(entity, PersonDto.class);
     }
 
     public PersonDto findById(Long id) throws ResourceNotFoundException {
