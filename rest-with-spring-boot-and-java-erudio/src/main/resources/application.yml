@@ -2,6 +2,8 @@ server:
   port: 8080
 cors:
   originPatterns: http://localhost:3000,http://localhost:8080,https://erudio.com.br
+file:
+  upload-dir: /uploadedFiles
 springdoc:
   pathsToMarch:
     - /auth/**
@@ -29,6 +31,12 @@ spring:
       #hibernate:
       #dialect: org.hibernate.dialect.MySQLDialect
     show-sql: false
+  servlet:
+    multipart:
+      enabled: true
+      file-size-threshold: 2KB
+      max-file-size: 200MB
+      max-request-size: 215MB
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
 

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Objects;
 
-@Tag(name = "Authentication Endpoint")
+@Tag(name = "Authentication")
 @RestController
 @RequestMapping("auth")
 public class AuthController {
