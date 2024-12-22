@@ -3,7 +3,7 @@ server:
 cors:
   originPatterns: http://localhost:3000,http://localhost:8080,https://erudio.com.br
 file:
-  upload-dir: /uploadedFiles
+  upload-dir: /home/runner/work/spring-foundation/uploadedFiles
 springdoc:
   pathsToMarch:
     - /auth/**
