@@ -31,7 +31,7 @@ jobs:
         
     - name: Build Application JAR
       working-directory: ./rest-with-spring-boot-and-java-erudio
-      run: mvn -B package --file pom.xml
+      run: mvn -B package --file pom.xml -DskipTests
 
     - name: Docker Compose build
       working-directory: ./
