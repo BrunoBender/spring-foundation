@@ -19,7 +19,7 @@ services:
   spring-foundation:
     image: 09102002/spring-foundation
     restart: always
-#    build: ./rest-with-spring-boot-and-java-erudio
+    build: ./rest-with-spring-boot-and-java-erudio
     working_dir: /rest-with-spring-boot-and-java-erudio
     environment:
       SPRING.DATASOURCE.URL: jdbc:mysql://db:3308/rest_with_spring_boot_erudio?useTimezone=true&serverTimezone=UTC
