@@ -39,13 +39,29 @@ spring:
       max-request-size: 215MB
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
+    #Desabilitar linhas abaixo caso opte por usar algum perfil específico
+    url: jdbc:mysql://spring-foundation.c1ci8w8869ni.us-east-2.rds.amazonaws.com:3306/spring_foundation?useTimezone=true&serverTimezone=UTC
+    username: docker
+    password: adminadmin
 
+#Configurações de base de dados por perfil
 ---
 
 spring:
   config:
     activate:
       on-profile: dev
+  datasource:
+    url: jdbc:mysql://spring-foundation.c1ci8w8869ni.us-east-2.rds.amazonaws.com:3306/spring_foundation?useTimezone=true&serverTimezone=UTC
+    username: docker
+    password: adminadmin
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: dev-home
   datasource:
     url: jdbc:mysql://localhost:3306/rest_with_spring_boot_erudio?useTimezone=true&serverTimezone=UTC
     username: root

@@ -6,8 +6,8 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: admin
       MYSQL_USER: docker
-      MYSQL_PASSWORD: admin
-      MYSQL_DATABASE: rest_with_spring_boot_erudio
+      MYSQL_PASSWORD: adminadmin
+      MYSQL_DATABASE: spring_foundation
       MYSQL_ROOT_HOST: '%'
       MYSQL_TCP_PORT: 3308
     ports:
