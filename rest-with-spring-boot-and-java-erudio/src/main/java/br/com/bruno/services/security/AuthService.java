@@ -36,6 +36,8 @@ public class AuthService {
             var username = data.getUsername();
             var password = data.getPassword();
 
+            logger.info("New Login to user "+ username);
+
             var user = findUserByUsername(username);
 
             authenticationManager.authenticate(
@@ -51,8 +53,6 @@ public class AuthService {
     }
 
     public TokenDto refreshToken(String username, String refreshToken) {
-        logger.info("New Login to user "+ username);
-
         findUserByUsername(username);
         return tokenProvider.refreshToken(refreshToken);
     }

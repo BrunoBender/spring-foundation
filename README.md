@@ -2,6 +2,7 @@
 
 Este repositório contém um modelo base de arquitetura para projetos em Java utilizando Spring Boot. O objetivo é oferecer uma estrutura inicial para desenvolvimento de APIs RESTful, seguindo boas práticas e padrões de mercado.
 
+[![CI/CD with Github Actions](https://github.com/BrunoBender/spring-foundation/actions/workflows/continuous-integration.yml/badge.svg)](https://github.com/BrunoBender/spring-foundation/actions/workflows/continuous-integration.yml)
 ---
 
 ## Tecnologias e Recursos Implementados
