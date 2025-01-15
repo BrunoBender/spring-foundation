@@ -5,6 +5,7 @@ import br.com.bruno.data.dto.v1.security.TokenDto;
 import br.com.bruno.entities.security.User;
 import br.com.bruno.repositories.security.UserRepository;
 import br.com.bruno.security.jwt.JwtTokenProvider;
+import br.com.bruno.services.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -12,6 +13,8 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.logging.Logger;
 
 @Service
 public class AuthService {
@@ -24,6 +27,8 @@ public class AuthService {
 
     @Autowired
     private UserRepository userRepository;
+
+    private final Logger logger = Logger.getLogger(AuthService.class.getName());
 
     @SuppressWarnings("rawtypes")
     public ResponseEntity sigin(AccountCredentialsDto data) {
@@ -46,6 +51,8 @@ public class AuthService {
     }
 
     public TokenDto refreshToken(String username, String refreshToken) {
+        logger.info("New Login to user "+ username);
+
         findUserByUsername(username);
         return tokenProvider.refreshToken(refreshToken);
     }
