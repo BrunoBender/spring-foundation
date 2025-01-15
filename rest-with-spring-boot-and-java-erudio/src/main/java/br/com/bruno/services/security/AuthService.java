@@ -32,6 +32,7 @@ public class AuthService {
 
     @SuppressWarnings("rawtypes")
     public ResponseEntity sigin(AccountCredentialsDto data) {
+        logger.info("New Login to user "+ username);
         try {
             var username = data.getUsername();
             var password = data.getPassword();
@@ -51,8 +52,6 @@ public class AuthService {
     }
 
     public TokenDto refreshToken(String username, String refreshToken) {
-        logger.info("New Login to user "+ username);
-
         findUserByUsername(username);
         return tokenProvider.refreshToken(refreshToken);
     }
