@@ -32,10 +32,11 @@ public class AuthService {
 
     @SuppressWarnings("rawtypes")
     public ResponseEntity sigin(AccountCredentialsDto data) {
-        logger.info("New Login to user "+ username);
         try {
             var username = data.getUsername();
             var password = data.getPassword();
+
+            logger.info("New Login to user "+ username);
 
             var user = findUserByUsername(username);
 
